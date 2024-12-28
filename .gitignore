@@ -1,1 +1,6 @@
 pastport-env/
+pastport-frontend/src/.env
+
+pastport/archiving/migrations/__pycache__/
+pastport/archiving/__pycache__/
+pastport/pastport/__pycache__/
