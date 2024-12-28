@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useTransition } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 import logo from "./logo.png";
@@ -33,7 +33,12 @@ const HomePage = () => {
   }, []);
 
   const handleAddSite = () => {
-    navigate("/add-site");
+    const isLoggedIn = localStorage.getItem("isLoggedIn"); // Check login status
+    if (isLoggedIn === "true") {
+      navigate("/add-site"); // Navigate to Add New Site page if logged in
+    } else {
+      navigate("/auth"); // Navigate to AuthPage if not logged in
+    }
   };
 
   const handleSiteClick = (siteId) => {
