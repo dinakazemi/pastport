@@ -1,8 +1,9 @@
 import logging
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
 import json
-from .models import Site, Artefact
+from .models import Site, Artefact, User
 from django.views.decorators.csrf import csrf_exempt
 
 logger = logging.getLogger(__name__)
@@ -10,6 +11,46 @@ logger = logging.getLogger(__name__)
 
 def index(request):
     return HttpResponse("Hello, world. You're at the pastport index.")
+
+
+@csrf_exempt
+def signup(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            name = data.get("name")
+            institution = data.get("institution")
+            password = data.get("password")
+
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({"error": "Email already exists"}, status=400)
+            user = User.objects.create_user(
+                email=email, name=name, institution=institution, password=password
+            )
+            return JsonResponse({"message": "User created successfully"}, status=201)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid HTTP method"}, status=405)
+
+
+@csrf_exempt
+def login(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            password = data.get("password")
+
+            user = authenticate(email=email, password=password)
+            if not user:
+                return JsonResponse({"error": "Invalid email or password"}, status=400)
+            # Return success response
+            return JsonResponse({"message": "Login successful"}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid HTTP method"}, status=405)
 
 
 @csrf_exempt

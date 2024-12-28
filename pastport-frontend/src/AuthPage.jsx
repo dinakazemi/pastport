@@ -48,7 +48,7 @@ const AuthPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Something went wrong!");
+        throw new Error(errorData.error || "Something went wrong!");
       }
 
       const data = await response.json();
@@ -57,8 +57,8 @@ const AuthPage = () => {
       localStorage.setItem("isLoggedIn", "true");
       navigate("/add-site");
     } catch (err) {
-      console.error("Error:", err.message);
-      setError(err.message); // Display error message
+      console.error("Error:", err.error || err.message); // Log error message
+      setError(err.error || err.message); // Display error message
     }
   };
 
