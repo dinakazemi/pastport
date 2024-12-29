@@ -19,19 +19,26 @@ body {
   max-height: 90px;
 }
 
-.add-site-button {
-  background-color: #fff;
-  color: #654520;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: transform 0.2s;
+.header-buttons {
+  display: flex;
+  gap: 10px;
 }
 
-.add-site-button:hover {
-  transform: scale(1.1);
+.add-site-button,
+.logout-button {
+  background-color: white;
+  color: #4caf50;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-site-button:hover,
+.logout-button:hover {
+  background-color: #f1f1f1;
 }
 
 .content {

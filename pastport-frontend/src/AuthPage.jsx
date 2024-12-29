@@ -55,7 +55,7 @@ const AuthPage = () => {
       console.log("Success:", data); // For debugging
       // Set login status in localStorage and navigate to Add New Site page
       localStorage.setItem("isLoggedIn", "true");
-      navigate("/add-site");
+      navigate("/");
     } catch (err) {
       console.error("Error:", err.error || err.message); // Log error message
       setError(err.error || err.message); // Display error message

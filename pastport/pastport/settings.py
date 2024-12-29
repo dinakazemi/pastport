@@ -87,6 +87,11 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = [
+    "archiving.backends.EmailAuthBackend",  # Replace with the correct path
+    "django.contrib.auth.backends.ModelBackend",  # Default backend (optional)
+]
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
