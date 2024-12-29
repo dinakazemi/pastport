@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse
 import json
 from .models import Site, Artefact, User
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -58,16 +59,30 @@ def create_site(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            name = data.get("name")
-            location = data.get("location")
+            name = data.get("name", "").strip().title()
+            location = data.get("location", "").strip().title()
             latitude = data.get("latitude")
             longitude = data.get("longitude")
 
-            site = Site.objects.create(
-                name=name, location=location, latitude=latitude, longitude=longitude
+            # check for missing fields
+            if not name or not location or not latitude or not longitude:
+                return JsonResponse({"error": "All fields are required"}, status=400)
+
+            # check if site already exists
+            if Site.objects.filter(
+                Q(name__iexact=name) | Q(latitude=latitude, longitude=longitude)
+            ).exists():
+                return JsonResponse({"error": "Site already exists"}, status=400)
+
+            # Create the site
+            Site.objects.create(
+                name=name,
+                location=location,
+                latitude=latitude,
+                longitude=longitude,
             )
             return JsonResponse(
-                {"message": "Site created successfully", "site_id": site.id}, status=201
+                {"message": f"Site {name} created successfully"}, status=201
             )
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
