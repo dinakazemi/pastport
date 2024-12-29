@@ -1,9 +1,11 @@
 import logging
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
 import json
-from .models import Site, Artefact
+from .models import Site, Artefact, User
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 logger = logging.getLogger(__name__)
 
@@ -13,20 +15,74 @@ def index(request):
 
 
 @csrf_exempt
+def signup(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            name = data.get("name")
+            institution = data.get("institution")
+            password = data.get("password")
+
+            if User.objects.filter(email=email).exists():
+                return JsonResponse({"error": "Email already exists"}, status=400)
+            user = User.objects.create_user(
+                email=email, name=name, institution=institution, password=password
+            )
+            return JsonResponse({"message": "User created successfully"}, status=201)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid HTTP method"}, status=405)
+
+
+@csrf_exempt
+def login(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            email = data.get("email")
+            password = data.get("password")
+
+            user = authenticate(email=email, password=password)
+            if not user:
+                return JsonResponse({"error": "Invalid email or password"}, status=400)
+            # Return success response
+            return JsonResponse({"message": "Login successful"}, status=200)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
+    return JsonResponse({"error": "Invalid HTTP method"}, status=405)
+
+
+@csrf_exempt
 def create_site(request):
     if request.method == "POST":
         try:
             data = json.loads(request.body)
-            name = data.get("name")
-            location = data.get("location")
+            name = data.get("name", "").strip().title()
+            location = data.get("location", "").strip().title()
             latitude = data.get("latitude")
             longitude = data.get("longitude")
 
-            site = Site.objects.create(
-                name=name, location=location, latitude=latitude, longitude=longitude
+            # check for missing fields
+            if not name or not location or not latitude or not longitude:
+                return JsonResponse({"error": "All fields are required"}, status=400)
+
+            # check if site already exists
+            if Site.objects.filter(
+                Q(name__iexact=name) | Q(latitude=latitude, longitude=longitude)
+            ).exists():
+                return JsonResponse({"error": "Site already exists"}, status=400)
+
+            # Create the site
+            Site.objects.create(
+                name=name,
+                location=location,
+                latitude=latitude,
+                longitude=longitude,
             )
             return JsonResponse(
-                {"message": "Site created successfully", "site_id": site.id}, status=201
+                {"message": f"Site {name} created successfully"}, status=201
             )
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
