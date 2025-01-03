@@ -11,6 +11,7 @@ class Site(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
+    admins = models.ManyToManyField("User")
 
     def __str__(self):
         return self.name
@@ -21,6 +22,7 @@ class Artefact(models.Model):
     artefact_id = models.AutoField(primary_key=True)
     user_generated_id = models.CharField(max_length=100, blank=True, unique=True)
     photo_url = models.URLField(blank=True, null=True, max_length=500)
+    image = models.ImageField(upload_to="uploads/images/", blank=True, null=True)
     context = models.TextField(blank=True)
     condition = models.CharField(max_length=100, blank=True)
     material = models.CharField(max_length=100, blank=True)
@@ -53,8 +55,7 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=100)
     institution = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    is_superuser = models.BooleanField(default=False)
+    sites = models.ManyToManyField(Site, blank=True)
 
     objects = UserManager()
 
@@ -63,3 +64,23 @@ class User(AbstractBaseUser):
 
     def __str__(self):
         return self.email
+
+
+class JoinRequest(models.Model):
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    join_as_admin = models.BooleanField(default=False)
+    message = models.TextField(blank=True)
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ("pending", "Pending"),
+            ("approved", "Approved"),
+            ("rejected", "Rejected"),
+        ],
+        default="pending",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Request by {self.user.email} for {self.site.name}"

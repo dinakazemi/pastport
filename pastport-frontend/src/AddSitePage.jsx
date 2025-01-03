@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 import "./AddSitePage.css";
 
 const AddSitePage = () => {
@@ -12,6 +13,12 @@ const AddSitePage = () => {
   const [error, setError] = useState(null); // For displaying error messages
   const [success, setSuccess] = useState(false); // For showing success message
   const navigate = useNavigate();
+  const { isLoggedIn } = useContext(AuthContext);
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login"); // Redirect to login if not authenticated
+    }
+  }, [navigate]);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -28,7 +35,9 @@ const AddSitePage = () => {
     try {
       const response = await fetch("/create-site/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
 

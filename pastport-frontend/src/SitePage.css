@@ -1,0 +1,99 @@
+/* General Page Styles */
+.site-page {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  color: #333;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+  margin: 5px 0;
+}
+
+/* Admins List */
+.site-page ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.site-page li {
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+/* Join Request Section */
+.join-request {
+  margin-top: 20px;
+}
+
+.custom-message-box {
+  width: 100%;
+  max-width: 600px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.checkbox-container {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container label {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #333;
+}
+
+.join-request button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.join-request button:hover {
+  background-color: #218838;
+}
+
+/* Messages */
+.error {
+  color: red;
+  margin-top: 20px;
+}
+
+.success {
+  color: green;
+  margin-top: 20px;
+}
+
+/* Login Prompt */
+.login-prompt {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.login-prompt button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+}
+
+.login-prompt button:hover {
+  background-color: #0056b3;
+}

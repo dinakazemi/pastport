@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 import "./AuthPage.css";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
+  const { setIsLoggedIn, setUserName } = useContext(AuthContext); // Access AuthContext
+  const [isLoginForm, setIsLoginForm] = useState(true); // Separate state to toggle form
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,7 +17,7 @@ const AuthPage = () => {
 
   // Toggle between Login and Signup forms
   const toggleForm = () => {
-    setIsLogin(!isLogin); // Switch form type
+    setIsLoginForm(!isLoginForm); // Switch form type
     setFormData({ name: "", email: "", institution: "", password: "" }); // Clear form data
     setError(null); // Reset errors
   };
@@ -29,8 +31,8 @@ const AuthPage = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-    const endpoint = isLogin ? "/login/" : "/signup/"; // Choose the correct endpoint
-    const requestData = isLogin
+    const endpoint = isLoginForm ? "/login/" : "/signup/"; // Choose the correct endpoint
+    const requestData = isLoginForm
       ? { email: formData.email, password: formData.password } // Login only requires email and password
       : {
           name: formData.name,
@@ -52,22 +54,25 @@ const AuthPage = () => {
       }
 
       const data = await response.json();
-      console.log("Success:", data); // For debugging
-      // Set login status in localStorage and navigate to Add New Site page
+
+      // Set login status in AuthContext and localStorage
+      setIsLoggedIn(true);
+      setUserName(data.name); // Set userName from backend response
       localStorage.setItem("isLoggedIn", "true");
-      navigate("/");
+      localStorage.setItem("userName", data.name);
+
+      navigate("/"); // Redirect to the homepage
     } catch (err) {
-      console.error("Error:", err.error || err.message); // Log error message
-      setError(err.error || err.message); // Display error message
+      setError(err.message); // Display error message
     }
   };
 
   return (
     <div className="auth-page">
-      <h1>{isLogin ? "Login" : "Sign Up"}</h1>
+      <h1>{isLoginForm ? "Login" : "Sign Up"}</h1>
       <form onSubmit={handleSubmit}>
         {/* Signup fields (name and institution) */}
-        {!isLogin && (
+        {!isLoginForm && (
           <>
             <label>
               Name:
@@ -112,11 +117,11 @@ const AuthPage = () => {
             required
           />
         </label>
-        <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
+        <button type="submit">{isLoginForm ? "Login" : "Sign Up"}</button>
       </form>
       {error && <p className="error">{error}</p>}
       <button className="toggle-button" onClick={toggleForm}>
-        {isLogin
+        {isLoginForm
           ? "Don't have an account? Sign Up"
           : "Already have an account? Login"}
       </button>
