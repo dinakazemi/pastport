@@ -5,42 +5,6 @@ body {
   color: #333;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #654520;
-  color: white;
-  animation: fadeIn 2s ease-in-out;
-}
-
-.logo {
-  max-height: 90px;
-}
-
-.header-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.add-site-button,
-.logout-button {
-  background-color: white;
-  color: #4caf50;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 5px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.add-site-button:hover,
-.logout-button:hover {
-  background-color: #f1f1f1;
-}
-
 .content {
   padding: 20px;
   animation: slideUp 1.5s ease-in-out;
