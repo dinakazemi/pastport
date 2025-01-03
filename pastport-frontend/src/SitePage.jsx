@@ -63,10 +63,6 @@ const SitePage = () => {
     }
   };
 
-  if (error) {
-    return <p className="error">{error}</p>;
-  }
-
   if (!siteDetails) {
     return <p>Loading site details...</p>;
   }
@@ -111,9 +107,12 @@ const SitePage = () => {
               checked={joinAsAdmin}
               onChange={(e) => setJoinAsAdmin(e.target.checked)}
             />
-            <label htmlFor="joinAsAdmin">Request to join as an admin</label>
+            <label htmlFor="joinAsAdmin" className="checkbox-message">
+              Request to join as an admin
+            </label>
           </div>
           <button onClick={handleJoinRequest}>Submit Request</button>
+          {error && <p className="error">{error}</p>}
           {successMessage && <p className="success">{successMessage}</p>}
         </div>
       ) : (
