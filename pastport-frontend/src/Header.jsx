@@ -1,12 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { AuthContext } from "./AuthContext";
 import logo from "./logo.png";
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn, userName, setUserName } =
-    useContext(AuthContext); // State to track login status
+  const { isLoggedIn, setIsLoggedIn, setUserName } = useContext(AuthContext); // State to track login status
   const navigate = useNavigate();
 
   const handleAddSite = () => {
