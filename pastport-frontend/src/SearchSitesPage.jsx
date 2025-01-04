@@ -25,6 +25,7 @@ const SearchSitesPage = () => {
 
   const handleShowSite = (siteId) => {
     // Navigate to the specific site's page
+    console.log("Navigating to site:", siteId);
     navigate(`/site/${siteId}`);
   };
 
