@@ -18,7 +18,7 @@ const AddSitePage = () => {
     if (!isLoggedIn) {
       navigate("/login"); // Redirect to login if not authenticated
     }
-  }, [navigate]);
+  }, [navigate, isLoggedIn]);
 
   // Handle form input changes
   const handleChange = (e) => {

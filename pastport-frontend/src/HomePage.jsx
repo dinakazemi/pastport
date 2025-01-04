@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "./AuthContext";
 import "./HomePage.css";
 
 const HomePage = () => {
   const [sites, setSites] = useState([]);
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +29,7 @@ const HomePage = () => {
         console.error("Error fetching sites:", error);
         setError(error.message); // Update error state
       });
-  }, []);
+  }, [setError]);
 
   const handleSiteClick = (siteId) => {
     navigate(`/site/${siteId}`);
