@@ -64,7 +64,10 @@ const SitePage = () => {
 
   // Handle artefact form submission
   const handleArtefactSubmit = async (e) => {
+    setArtefactSuccess(null);
+    setArtefactError(null);
     e.preventDefault();
+    console.log("Artefact data:", artefactData);
     try {
       const response = await fetch("/add-artefact/", {
         method: "POST",
@@ -296,7 +299,7 @@ const SitePage = () => {
                 </label>
                 <div className="makepublic-checkbox-container">
                   <label htmlFor="makePublic" id="make-public-label">
-                    Make Public
+                    Make public
                   </label>
                   <input
                     id="makePublic"

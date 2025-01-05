@@ -278,7 +278,7 @@ def add_artefact(request):
             description = data.get("description")
             image = request.FILES.get("image")
 
-            site = get_object_or_404(Site, id=site_id)
+            site = get_object_or_404(Site, site_id=site_id)
             user = request.user
             print(user)
 
@@ -295,7 +295,10 @@ def add_artefact(request):
                 added_by=user,
             )
             return JsonResponse(
-                {"message": "Artefact added successfully", "artefact_id": artefact.id},
+                {
+                    "message": "Artefact added successfully",
+                    "artefact_id": artefact.artefact_id,
+                },
                 status=201,
             )
         except Exception as e:
