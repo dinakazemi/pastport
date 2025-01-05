@@ -34,7 +34,10 @@ def signup(request):
             user = authenticate(email=email, password=password)
             if user is not None:
                 login(request, user)  # Log the user in
-                return JsonResponse({"user": user.name}, status=201)
+                print(user.name)
+                return JsonResponse(
+                    {"useremail": user.email, "username": user.name}, status=201
+                )
             else:
                 return JsonResponse(
                     {"error": "Authentication failed after signup"}, status=500
@@ -57,8 +60,9 @@ def login_view(request):
                 return JsonResponse({"error": "Invalid email or password"}, status=400)
             # Return success response
             login(request, user)
-            print(request.user.is_authenticated, user, request.user)
-            return JsonResponse({"user": user.name}, status=200)
+            return JsonResponse(
+                {"useremail": user.email, "username": user.name}, status=200
+            )
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
 
@@ -101,6 +105,7 @@ def create_site(request):
             )
             # add the user as an admin
             site.admins.add(request.user)
+            site.members.add(request.user)
             site.save()
             return JsonResponse(
                 {"message": f"Site {name} created successfully"}, status=201
@@ -193,7 +198,8 @@ def get_site_details(request, site_id):
     if request.method == "GET":
         site = get_object_or_404(Site, site_id=site_id)
         admins = list(site.admins.values("email")) if site.admins.exists() else []
-        print(admins)
+        members = list(site.members.values("email")) if site.members.exists() else []
+        print(members)
         return JsonResponse(
             {
                 "name": site.name,
@@ -202,6 +208,7 @@ def get_site_details(request, site_id):
                 "longitude": site.longitude,
                 "created_at": site.created_at,
                 "admins": admins,
+                "members": members,
             },
             status=200,
         )
@@ -256,6 +263,7 @@ def get_sites(request):
 
 
 @csrf_exempt
+@login_required
 def add_artefact(request):
     if request.method == "POST":
         try:
@@ -271,6 +279,8 @@ def add_artefact(request):
             image = request.FILES.get("image")
 
             site = get_object_or_404(Site, id=site_id)
+            user = request.user
+            print(user)
 
             artefact = Artefact.objects.create(
                 site=site,
@@ -281,6 +291,8 @@ def add_artefact(request):
                 material=material,
                 description=description,
                 is_public=is_public,
+                image=image,
+                added_by=user,
             )
             return JsonResponse(
                 {"message": "Artefact added successfully", "artefact_id": artefact.id},

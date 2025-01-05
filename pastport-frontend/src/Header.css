@@ -28,7 +28,7 @@ body {
 .logout-button,
 .search-site-button {
   background-color: white;
-  color: #4caf50;
+  color: #6cbec7;
   border: none;
   padding: 8px 15px;
   border-radius: 5px;
@@ -37,7 +37,13 @@ body {
   transition: background-color 0.3s ease;
 }
 
+.logout-button {
+  background-color: #6cbec7;
+  color: white;
+}
+
 .add-site-button:hover,
-.logout-button:hover {
+.logout-button:hover,
+.search-site-button:hover {
   background-color: #f1f1f1;
 }
