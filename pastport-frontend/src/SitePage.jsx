@@ -148,7 +148,7 @@ const SitePage = () => {
         ))}
       </p>
       {/* Request to Join Section */}
-      <h2>Request to Join</h2>
+      <h3>Request to Join</h3>
       {isLoggedIn ? (
         !isMember ? ( // Display Join Request only if the user is not a member
           <div className="join-request">
@@ -192,7 +192,7 @@ const SitePage = () => {
             className="toggle-artefact-title"
             onClick={() => setIsAddArtefactOpen((prev) => !prev)}
           >
-            <h2>Add Artefact</h2>
+            <h3>Add Artefact</h3>
             <span className={`arrow ${isAddArtefactOpen ? "open" : "closed"}`}>
               ▼
             </span>
@@ -294,8 +294,12 @@ const SitePage = () => {
                     }
                   />
                 </label>
-                <label>
+                <div className="makepublic-checkbox-container">
+                  <label htmlFor="makePublic" id="make-public-label">
+                    Make Public
+                  </label>
                   <input
+                    id="makePublic"
                     type="checkbox"
                     checked={artefactData.is_public}
                     onChange={(e) =>
@@ -305,8 +309,8 @@ const SitePage = () => {
                       }))
                     }
                   />
-                  Make Public
-                </label>
+                </div>
+
                 <button type="submit">Add Artefact</button>
               </form>
               {artefactError && <p className="error">{artefactError}</p>}

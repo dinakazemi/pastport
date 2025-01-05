@@ -129,6 +129,7 @@ p {
   border-radius: 5px;
   background-color: #f9f9f9;
   display: flex;
+  justify-content: flex-start;
   flex-direction: column;
 }
 
@@ -138,6 +139,16 @@ p {
   display: flex;
   flex-direction: column; /* Makes label wrap input below it */
   text-align: left; /* Align text inside the label */
+}
+
+#make-public-label {
+  width: 30%;
+  margin-top: 5px;
+}
+
+.add-artefact-section button {
+  margin-top: 15px;
+  align-self: flex-start;
 }
 
 .add-artefact-section input,
@@ -156,8 +167,17 @@ p {
   box-shadow: none;
 }
 
-.make-public-checkbox {
+.makepublic-checkbox-container {
   display: inline-flex; /* Align items horizontally */
-  align-items: left; /* Vertically center the label with the checkbox */
-  gap: 0.5rem; /* Add some spacing between the checkbox and the label */
+  align-items: center; /* Align items vertically in the center */
+  gap: 8px; /* Add some space between the label and checkbox */
+  justify-content: flex-start;
+  text-align: left; /* Ensure text aligns left */
+  width: 100%; /* Full width of the form */
+}
+
+#makePublic {
+  margin-top: 5px; /* Remove default margin */
+  align-self: flex-start;
+  width: 20%;
 }
