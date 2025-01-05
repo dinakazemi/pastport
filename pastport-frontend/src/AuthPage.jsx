@@ -5,7 +5,8 @@ import "./AuthPage.css";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const { setIsLoggedIn, setUserName } = useContext(AuthContext); // Access AuthContext
+  const { setIsLoggedIn, userName, setUserName, userEmail, setUserEmail } =
+    useContext(AuthContext); // Access AuthContext
   const [isLoginForm, setIsLoginForm] = useState(true); // Separate state to toggle form
   const [formData, setFormData] = useState({
     name: "",
@@ -46,6 +47,7 @@ const AuthPage = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
+        credentials: "include", // Ensure cookies are sent for session-based authentication
       });
 
       if (!response.ok) {
@@ -55,11 +57,16 @@ const AuthPage = () => {
 
       const data = await response.json();
 
-      // Set login status in AuthContext and localStorage
-      setIsLoggedIn(true);
-      setUserName(data.name); // Set userName from backend response
+      console.log("Data:", data); // Log the response data
+      // Update localStorage and AuthContext
       localStorage.setItem("isLoggedIn", "true");
-      localStorage.setItem("userName", data.name);
+      localStorage.setItem("userName", data.username); // Store userName from backend response
+      localStorage.setItem("userEmail", data.useremail); // Store user's email from backend response
+      setIsLoggedIn(true);
+      setUserName(data.username); // Set userName in context
+      setUserEmail(data.useremail); // Set userEmail in context
+      console.log(userName); // Log the userName
+      console.log(userEmail); // Log the userEmail
 
       navigate("/"); // Redirect to the homepage
     } catch (err) {

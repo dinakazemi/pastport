@@ -5,7 +5,8 @@ import { AuthContext } from "./AuthContext";
 import logo from "./logo.png";
 
 const Header = () => {
-  const { isLoggedIn, setIsLoggedIn, setUserName } = useContext(AuthContext); // State to track login status
+  const { isLoggedIn, setIsLoggedIn, setUserName, setUserEmail } =
+    useContext(AuthContext); // State to track login status
   const navigate = useNavigate();
 
   const handleAddSite = () => {
@@ -24,10 +25,12 @@ const Header = () => {
     // Clear local storage
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
 
     // Update global state
     setIsLoggedIn(false);
     setUserName("");
+    setUserEmail("");
     navigate("/"); // Redirect to Home
   };
 

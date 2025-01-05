@@ -44,7 +44,7 @@ const HomePage = () => {
             <div
               key={site.site_id}
               className="site-item"
-              onClick={() => handleSiteClick(site.siteId)}
+              onClick={() => handleSiteClick(site.site_id)}
             >
               <h3>{site.name}</h3>
               <p>{site.location}</p>

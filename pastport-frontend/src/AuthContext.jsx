@@ -9,11 +9,26 @@ export const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState(
     localStorage.getItem("userName") || ""
   );
+  const [userEmail, setUserEmail] = useState(
+    localStorage.getItem("userEmail") || ""
+  );
 
   useEffect(() => {
+    console.log("Auth Context:", userName);
     const handleStorageChange = () => {
-      setIsLoggedIn(localStorage.getItem("isLoggedIn") === "true");
-      setUserName(localStorage.getItem("userName") || "");
+      const newLoginStatus = localStorage.getItem("isLoggedIn") === "true";
+      const newUserName = localStorage.getItem("userName") || "";
+      const newUserEmail = localStorage.getItem("userEmail") || "";
+
+      if (isLoggedIn !== newLoginStatus) {
+        setIsLoggedIn(newLoginStatus);
+      }
+      if (userName !== newUserName) {
+        setUserName(newUserName);
+      }
+      if (userEmail !== newUserEmail) {
+        setUserEmail(newUserEmail);
+      }
     };
 
     window.addEventListener("storage", handleStorageChange);
@@ -22,7 +37,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, userName, setUserName }}
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        userName,
+        setUserName,
+        userEmail,
+        setUserEmail,
+      }}
     >
       {children}
     </AuthContext.Provider>

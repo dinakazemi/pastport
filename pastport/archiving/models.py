@@ -11,7 +11,12 @@ class Site(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
-    admins = models.ManyToManyField("User")
+    admins = models.ManyToManyField(
+        "User", related_name="admin_sites"
+    )  # Admins of the site
+    members = models.ManyToManyField(
+        "User", related_name="member_sites"
+    )  # Members of the site
 
     def __str__(self):
         return self.name
@@ -29,6 +34,9 @@ class Artefact(models.Model):
     is_public = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    added_by = models.ForeignKey(
+        "User", on_delete=models.SET_NULL, related_name="artefacts", null=True
+    )
 
     def __str__(self):
         return self.artefact_id
@@ -55,8 +63,6 @@ class User(AbstractBaseUser):
     name = models.CharField(max_length=100)
     institution = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
-    sites = models.ManyToManyField(Site, blank=True)
-
     objects = UserManager()
 
     USERNAME_FIELD = "email"

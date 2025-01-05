@@ -24,7 +24,7 @@ p {
 }
 
 .site-page li {
-  background-color: #f4f4f4;
+  background-color: #f9f9f9;
   padding: 10px;
   margin: 5px 0;
   border-radius: 5px;
@@ -97,4 +97,87 @@ p {
 
 .login-prompt button:hover {
   background-color: #0056b3;
+}
+
+.toggle-artefact-title {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.toggle-artefact-title h2 {
+  margin-right: 10px;
+}
+
+.arrow {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.arrow.closed {
+  transform: rotate(0deg);
+}
+
+.add-artefact-section {
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.add-artefact-section label {
+  width: 100%; /* Ensures labels and inputs stretch to full width */
+  max-width: 400px; /* Optional: Restrict max width for a cleaner layout */
+  display: flex;
+  flex-direction: column; /* Makes label wrap input below it */
+  text-align: left; /* Align text inside the label */
+}
+
+#make-public-label {
+  width: 30%;
+  margin-top: 5px;
+}
+
+.add-artefact-section button {
+  margin-top: 15px;
+  align-self: flex-start;
+}
+
+.add-artefact-section input,
+.add-artefact-section textarea {
+  width: 100%; /* Full width of the form */
+  max-width: 400px; /* Match the max-width of labels */
+  padding: 8px;
+  margin-top: 5px; /* Space between label and input/textarea */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.add-artefact-form {
+  background-color: #f9f9f9;
+  box-shadow: none;
+}
+
+.makepublic-checkbox-container {
+  display: inline-flex; /* Align items horizontally */
+  align-items: center; /* Align items vertically in the center */
+  gap: 8px; /* Add some space between the label and checkbox */
+  justify-content: flex-start;
+  text-align: left; /* Ensure text aligns left */
+  width: 100%; /* Full width of the form */
+}
+
+#makePublic {
+  margin-top: 5px; /* Remove default margin */
+  align-self: flex-start;
+  width: 20%;
 }
